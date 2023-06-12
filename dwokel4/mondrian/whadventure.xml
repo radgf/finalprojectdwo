@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<Schema name="adventureworkpenjualan">
+<!--
+  == This software is subject to the terms of the Eclipse Public License v1.0
+  == Agreement, available at the following URL:
+  == http://www.eclipse.org/legal/epl-v10.html.
+  == You must accept the terms of that agreement to use this software.
+  ==
+  == Copyright (C) 2000-2005 Julian Hyde
+  == Copyright (C) 2005-2011 Pentaho and others
+  == All Rights Reserved.
+  -->
+
+<!-- Shared dimensions -->
+
+  
+
+<!-- Sales -->
+<Cube name="FaktaPenjualan" defaultMeasure="TaxAmt">
+  <!-- Use annotations to provide translations of this cube's caption and
+       description into German and French. Use of annotations in this manner is
+       experimental and unsupported; just for testing right now. -->
+  
+  <Table name="tabel_fakta_penjualan2"/>
+
+    
+  <Dimension name="Customer" foreignKey ="CustomerID">
+      <Hierarchy hasAll="true" allMemberName="All Customer" primaryKey ="CustomerID">
+      <Table name="tabel_dimensi_customer"/>
+      <Level name="Customer" column="CustomerType"/>
+      </Hierarchy>
+      
+  </Dimension>
+
+ 
+  <Dimension name="Waktu" foreignKey="time_id">
+    <Hierarchy hasAll="true" allMemberName="All Times" primaryKey="time_id">
+      <Table name="tabel_dimensi_waktu" />
+      <Level name="Year" column="tahun" type="Numeric" uniqueMembers="true"
+          levelType="TimeYears"/>
+      <Level name="Month" column="bulan" uniqueMembers="false" type="Numeric"
+          levelType="TimeMonths"/>
+      <Level name="Date" column="tanggal" uniqueMembers="false" type="Numeric"
+          levelType="TimeDays"/>
+    </Hierarchy>
+   
+  </Dimension>
+
+  <Dimension name="Produk" foreignKey = "ProductID">
+    <Hierarchy hasAll="true" allMemberName="All Products" primaryKey ="ProductID">
+      <Table name="tabel_dimensi_produk" />
+      <Level name="Category" column="CategoryName"/>
+      <Level name="SubCategory" column="SubcategoryName" />
+    </Hierarchy>
+  </Dimension>
+
+  <Dimension name="Vendor" foreignKey="VendorID">
+    <Hierarchy  hasAll  ="true" allMemberName="All Vendor" primaryKey  = "VendorID">
+        <Table name="tabel_dimensi_vendor"/>
+        <Level name="Name" column="Name"/>
+    </Hierarchy>
+  </Dimension>
+
+  <Dimension name="Lokasi" foreignKey="TerritoryID">
+    <Hierarchy  hasAll  ="true" allMemberName="All Lokasi" primaryKey  = "TerritoryID">
+        <Table name="tabel_dimensi_lokasi"/>
+        <Level name="Region" column="CountryRegionCode"/>
+        <Level name="Negara" column="Negara"/>
+        <Level name="Store" column="Store"/>
+    </Hierarchy>
+  </Dimension> 
+
+  <Measure name="TaxAmt" column="TaxAmt" aggregator="sum" formatString="#,##0.00"/>
+  <Measure name="SubTotal" column="SubTotal" aggregator="sum" formatString="###0"/>
+  
+</Cube>
+</Schema>
